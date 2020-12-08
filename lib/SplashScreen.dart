@@ -5,12 +5,7 @@ import 'package:flutter/painting.dart';
 import 'package:flutter_app_demo/main.dart';
 
 
-void main() {
-  runApp(MaterialApp(
-    home: SplashScreen(),
-    debugShowCheckedModeBanner: false,
-  ));
-}
+
 
 class SplashScreen extends StatefulWidget {
   @override
