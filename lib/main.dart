@@ -10,9 +10,9 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.green,
-        primaryColor: Colors.green,
-        accentColor: Colors.green,
+        primarySwatch: Colors.deepOrange,
+        primaryColor: Colors.deepOrange,
+        accentColor: Colors.deepOrange,
       ),
       home: MyHomePage(),
     );
@@ -60,29 +60,42 @@ class _MyHomePageState extends State<MyHomePage>
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-      body: CustomScrollView(
-        slivers: <Widget>[
-          SliverAppBar(
-            pinned: true,
-            floating: true,
-            snap: true,
-            expandedHeight: 190.0,
-            flexibleSpace: FlexibleSpaceBar(
-              title: Text(
-                'My Demo App',
-                style: TextStyle(color: Colors.black),
-              ),
-              background: Image.asset('assets/images/sbi.jpg'),
-              centerTitle: true,
+      body: Container(
+        child: TabBarView(
+          controller: mTabsControl,
+          children: <Widget>[
+            CustomScrollView(
+              slivers: <Widget>[
+                SliverAppBar(
+                  pinned: true,
+                  floating: true,
+                  snap: true,
+                  expandedHeight: 190.0,
+                  flexibleSpace: FlexibleSpaceBar(
+                    title: Text(
+                      'My Demo App',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                    background: Image.asset('assets/images/sbi.jpg'),
+                    centerTitle: true,
+                  ),
+                ),
+                SliverList(
+                  delegate: SliverChildListDelegate(mGetItems()),
+                )
+              ],
             ),
-          ),
-          SliverList(
-            delegate: SliverChildListDelegate(mGetItems()),
-          )
-        ],
+            TopTabBar(),
+            Center(
+                child: Text(
+              'profile',
+              style: TextStyle(fontSize: 30.0, color: Colors.deepOrange),
+            )),
+          ],
+        ),
       ),
       bottomNavigationBar: Container(
-        color: Colors.green,
+        color: Colors.deepOrange,
         child: TabBar(
           unselectedLabelColor: Colors.black,
           labelColor: Colors.white,
@@ -104,6 +117,59 @@ class _MyHomePageState extends State<MyHomePage>
           ],
         ),
       ),
+    );
+  }
+}
+
+class TopTabBar extends StatefulWidget {
+  TopTabBar({Key key}) : super(key: key);
+
+  @override
+  _TopStateTabBar createState() => _TopStateTabBar();
+}
+
+class _TopStateTabBar extends State<TopTabBar>
+    with SingleTickerProviderStateMixin {
+  TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 3, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _tabController.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('My Test App Demo'),
+        centerTitle: true,
+      ),
+      body: Scaffold(
+          appBar: PreferredSize(
+        preferredSize: Size.fromHeight(kToolbarHeight),
+        child: TabBar(
+          unselectedLabelColor: Colors.black,
+          labelColor: Colors.deepOrange,
+          indicator: UnderlineTabIndicator(borderSide: BorderSide(width: 0.0)),
+          controller: _tabController,
+          tabs: <Widget>[
+            Tab(text: "All"),
+            Tab(
+              text: "Paid",
+            ),
+            Tab(
+              text: "History",
+            ),
+          ],
+        ),
+      )),
     );
   }
 }
